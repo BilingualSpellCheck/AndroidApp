@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -15,7 +16,7 @@
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="180dp"
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/editText"
@@ -24,9 +25,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:layout_above="@+id/lang1"
         android:hint="Type here"
-        android:gravity="top|left"
-        android:layout_above="@+id/lang1" />
+        android:gravity="top|left" />
 
     <Button
         android:layout_width="wrap_content"
