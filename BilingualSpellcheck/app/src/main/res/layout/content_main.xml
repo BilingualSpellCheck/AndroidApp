@@ -24,9 +24,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/lang1"
         android:hint="Type here"
-        android:gravity="top|left" />
+        android:gravity="top|left"
+        android:layout_above="@+id/lang1" />
 
     <Button
         android:layout_width="wrap_content"
