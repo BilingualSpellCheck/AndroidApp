@@ -39,7 +39,8 @@
         android:layout_marginBottom="201dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="buttonOnClick" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -81,5 +82,17 @@
         android:layout_alignTop="@+id/check"
         android:layout_toRightOf="@+id/textView"
         android:layout_toEndOf="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView"
+        android:layout_alignRight="@+id/lang2"
+        android:layout_alignEnd="@+id/lang2"
+        android:id="@+id/txtOutput"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

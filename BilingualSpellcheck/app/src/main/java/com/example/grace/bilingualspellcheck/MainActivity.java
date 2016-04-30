@@ -8,6 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,6 +19,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    private EditText favcolor;
+    private TextView textout;
+
+    public void buttonOnClick (View v) {
+ // do something when button is clicked
+        Button Check=(Button) v;
+        // startActivity(nev Intent (getApplicationContext(), Activity2.class));
+        favcolor = (EditText) findViewById(R.id.editText);
+        textout = (TextView) findViewById (R.id.txtOutput);
+        textout.setText (favcolor.getText());
+        ((Button) v).setText("CHECKED");
+
     }
 
     @Override
