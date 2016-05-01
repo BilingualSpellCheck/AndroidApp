@@ -3,6 +3,13 @@ package com.example.grace.bilingualspellcheck;
 /**
  * Created by Jeannelle on 4/30/2016.
  */
+import android.content.Context;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 
 public class Algorithm {
@@ -53,13 +60,17 @@ public class Algorithm {
     }
 
 
-    public static String check(String lang1, String lang2, String originalText) {
+    public static String check(String lang1, String lang2, String originalText, Context c) {
 
         String result = "";
 
 
         //gets words from the users and puts them into arrays
         String[] originalWords = originalText.split(" ");
+
+        //puts lang 1 and 2 to lowercase
+        lang1 = lang1.toLowerCase();
+        lang2 = lang2.toLowerCase();
 
         //checks if words are capitalized or not
         boolean[] isCapital = new boolean[originalWords.length];
@@ -85,20 +96,34 @@ public class Algorithm {
         }
 
         //checks if each word is in the dictionary or not
+        BufferedReader reader;
+
         for (int i = 0; i < originalWords.length; i ++){
-            TextIO.readFile("app/res/dictionaries/" + lang1 + ".txt");
-            while (!TextIO.eof()){
-                String line = TextIO.getln();
-                if (originalWords[i].compareTo(line) == 0){
-                    isCorrect[i] = true;
+            try {
+                InputStream langFile1 = c.getAssets().open(lang1 + ".txt");
+                reader = new BufferedReader(new InputStreamReader(langFile1));
+                String line = reader.readLine();
+                while (line != null){
+                    if (originalWords[i].compareTo(line) == 0) {
+                        isCorrect[i] = true;
+                    }
+                    line = reader.readLine();
                 }
+            }catch(IOException ioe){
+                ioe.printStackTrace();
             }
-            TextIO.readFile("app/res/dictionaries/" +lang2 + ".txt");
-            while (!TextIO.eof()){
-                String line = TextIO.getln();
-                if (originalWords[i].compareTo(line) == 0){
-                    isCorrect[i] = true;
+            try {
+                InputStream langFile2 = c.getAssets().open(lang2 + ".txt");
+                reader = new BufferedReader(new InputStreamReader(langFile2));
+                String line = reader.readLine();
+                while (line != null){
+                    if (originalWords[i].compareTo(line) == 0) {
+                        isCorrect[i] = true;
+                    }
+                    line = reader.readLine();
                 }
+            }catch(IOException ioe){
+                ioe.printStackTrace();
             }
         }
 
@@ -121,51 +146,75 @@ public class Algorithm {
                 mCount++;
             }
         }
-
-        result += Arrays.toString(misspelled);
+        if(misspelled.length>0)
+            result += "Misspelled words: ";
+        for(int i=0; i<misspelled.length; i++) {
+            result += misspelled[i];
+            if(i<misspelled.length-1)
+                result+=", ";
+        }
 
 		/* suggestions for each misspelled word
 		 * suggestions are stored in an array of arrays
 		 */
         String[][] suggestions = new String[badWords][10];
-        for (int i = 0; i < badWords; i ++){
+        for (int i = 0; i < badWords; i ++) {
             int j = 0;
-            TextIO.readFile(lang1 + ".txt");
-            while (!TextIO.eof()){
-                String line = TextIO.getln();
-                if (minDistance(misspelled[i],line) < 2){
-                    if (misspelledIsCap[i]){
-                        char newChar = (char) (line.charAt(0)-32);
-                        suggestions[i][j] = newChar + line.substring(1,line.length());
+            try {
+                InputStream langFile1 = c.getAssets().open(lang1 + ".txt");
+                reader = new BufferedReader(new InputStreamReader(langFile1));
+                String line = reader.readLine();
+                while (line != null) {
+                    if (minDistance(misspelled[i], line) < 2) {
+                        if (misspelledIsCap[i]) {
+                            char newChar = (char) (line.charAt(0) - 32);
+                            suggestions[i][j] = newChar + line.substring(1, line.length());
+                        } else {
+                            suggestions[i][j] = line;
+                        }
+                        j++;
                     }
-                    else{
-                        suggestions[i][j] = line;
-                    }
-                    j ++;
+                    // first five suggestions are from first language
+                    if (j == 5) break;
+                    line = reader.readLine();
                 }
-                // first five suggestions are from first language
-                if (j == 5) break;
-            }
-            TextIO.readFile(lang2 + ".txt");
-            while (!TextIO.eof()){
-                String line = TextIO.getln();
-                if (minDistance(misspelled[i],line) < 2){
-                    if (misspelledIsCap[i]){
-                        char newChar = (char) (line.charAt(0)-32);
-                        suggestions[i][j] = newChar + line.substring(1,line.length());
-                    }
-                    else{
-                        suggestions[i][j] = line;
-                    }
-                    j++;
-                }
-                //second five suggestions are from second language
-                if (j == 10) break;
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
             }
         }
+            for (int i = 0; i < badWords; i ++) {
+                int j = 0;
+                try {
+                    InputStream langFile2 = c.getAssets().open(lang2 + ".txt");
+                    reader = new BufferedReader(new InputStreamReader(langFile2));
+                    String line = reader.readLine();
+                    while (line != null) {
+                        if (minDistance(misspelled[i], line) < 2) {
+                            if (misspelledIsCap[i]) {
+                                char newChar = (char) (line.charAt(0) - 32);
+                                suggestions[i][j] = newChar + line.substring(1, line.length());
+                            } else {
+                                suggestions[i][j] = line;
+                            }
+                            j++;
+                        }
+                        // second five suggestions are from second language
+                        if (j == 10) break;
+                        line = reader.readLine();
+                    }
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
 
+        result += "\nSuggestions:";
         for (int i = 0; i < badWords; i ++){
-            result += Arrays.toString(suggestions[i]);
+            result += "\n" + misspelled[i] + ":";
+            for(int j=-0; j<suggestions[i].length; j++){
+                if(suggestions[i][j]==null)
+                    break;
+                else result += " " + suggestions[i][j];
+            }
         }
         return result;
     }

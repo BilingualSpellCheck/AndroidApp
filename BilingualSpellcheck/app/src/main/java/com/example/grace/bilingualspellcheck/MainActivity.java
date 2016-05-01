@@ -58,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         textout = (TextView) findViewById (R.id.txtOutput);
-        textout.setText (Algorithm.check(langSetter1.getSelectedItem().toString(),
-                langSetter2.getSelectedItem().toString(), favcolor.toString()));
+        textout.setText(Algorithm.check(langSetter1.getSelectedItem().toString(),
+                langSetter2.getSelectedItem().toString(), favcolor.getText().toString(), this));
         ((Button) v).setText("CHECKED");
 
     }
