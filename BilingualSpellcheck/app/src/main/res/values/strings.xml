@@ -6,6 +6,9 @@
     <string-array name = "languages_array">
         <item>English</item>
         <item>Spanish</item>
+        <item>Polish</item>
+        <item>German</item>
+        <item>French</item>
     </string-array>
 </resources>
 
