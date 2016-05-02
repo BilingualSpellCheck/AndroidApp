@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -15,7 +16,7 @@
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="180dp"
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/editText"
@@ -38,7 +39,8 @@
         android:layout_marginBottom="201dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:onClick="buttonOnClick" />
 
     <Spinner
         android:layout_width="wrap_content"
@@ -65,6 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lang2"
+        android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/lang1"
         android:layout_toRightOf="@+id/textView"
         android:layout_toEndOf="@+id/textView"
@@ -80,5 +83,17 @@
         android:layout_alignTop="@+id/check"
         android:layout_toRightOf="@+id/textView"
         android:layout_toEndOf="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView"
+        android:layout_alignRight="@+id/lang2"
+        android:layout_alignEnd="@+id/lang2"
+        android:id="@+id/txtOutput"
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

@@ -8,16 +8,81 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+import android.widget.Toast;
+import android.content.ClipboardManager;
+import android.content.ClipData;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    Button copyButton;
+    EditText copyText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        final String[] languages = {"English", "Spanish", "French", "Polish", "German"};
+
+
+        ArrayAdapter<String> stringArrayAdapter= new ArrayAdapter<String>(this,
+                        android.R.layout.simple_spinner_dropdown_item,
+                        languages);
+        Spinner langSetter1 =
+                (Spinner)  findViewById(R.id.lang1);
+        langSetter1.setAdapter(stringArrayAdapter);
+        //langSetter1.setOnItemSelectedListener(onSpinner1);
+
+        Spinner langSetter2 =
+                (Spinner)  findViewById(R.id.lang2);
+        langSetter2.setAdapter(stringArrayAdapter);
+        //langSetter1.setOnItemSelectedListener(onSpinner2);
+
+        copyButton = (Button) findViewById(R.id.copy);
+        copyButton.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        copyText = (EditText) findViewById(R.id.editText);
+                        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("clipLabel", copyText.getText().toString());
+                        clipboard.setPrimaryClip(clip);
+                        copyButton.setText("COPIED");
+                    }
+                }
+        );
+
     }
+
+
+    private EditText favcolor;
+    private TextView textout;
+
+    public void buttonOnClick (View v) {
+ // do something when button is clicked
+        Button Check=(Button) v;
+        // startActivity(nev Intent (getApplicationContext(), Activity2.class));
+        favcolor = (EditText) findViewById(R.id.editText);
+        Spinner langSetter1 =
+                (Spinner)  findViewById(R.id.lang1);
+        Spinner langSetter2 =
+                (Spinner)  findViewById(R.id.lang2);
+
+
+        textout = (TextView) findViewById (R.id.txtOutput);
+        textout.setText(Algorithm.check(langSetter1.getSelectedItem().toString(),
+                langSetter2.getSelectedItem().toString(), favcolor.getText().toString(), this));
+        ((Button) v).setText("CHECKED");
+
+    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -25,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
